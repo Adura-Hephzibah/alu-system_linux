@@ -10,10 +10,10 @@ OBJ := $(SRC:.c=.o)
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-    $(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^
 
 %.o: %.c
-    $(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-    $(RM) $(OBJ) $(TARGET)
+	$(RM) $(OBJ) $(TARGET)
