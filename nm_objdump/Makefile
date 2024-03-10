@@ -1,26 +1,8 @@
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -pedantic -std=gnu90 -g
-SRC = $(wildcard *.c)
-OBJ = $(SRC:.c=.o)
-NAME0 = hnm
-NAME1 = hobjdump
+CFLAGS = -Wall -Werror -Wextra -pedantic
 
-.PHONY: all clean oclean fclean re
+hnm: 0-hnm.c
+	$(CC) $(CFLAGS) 0-hnm.c -o hnm
 
-all: $(NAME0) $(NAME1)
-
-$(NAME0): $(OBJ)
-	$(CC) $(CFLAGS) $^ -o $@
-
-$(NAME1): $(OBJ)
-	$(CC) $(CFLAGS) $^ -o $@
-
-clean:
-	$(RM) *~ $(NAME0) $(NAME1)
-
-oclean:
-	$(RM) $(OBJ)
-
-fclean: clean oclean
-
-re: fclean all
+hobjdump: 1-hobjdump.c
+	$(CC) $(CFLAGS) 1-hobjdump.c -o hobjdump
