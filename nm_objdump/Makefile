@@ -1,21 +1,33 @@
-CC := gcc
-CFLAGS := -Wall -Werror -Wextra -pedantic
-TARGET := hnm
+CC = gcc
+CFLAGS = -Wall -Werror -Wextra -pedantic -std=gnu90 -g
 
-SRC := $(wildcard *.c)
-OBJ := $(SRC:.c=.o)
+SRC0 = $(wildcard *.c)
+OBJ0 = $(SRC0:.c=.o)
+NAME0 = hnm
 
-.PHONY: all clean
+SRC1 = $(wildcard *.c)
+OBJ1 = $(SRC1:.c=.o)
+NAME1 = hobjdump
 
-all: $(TARGET)
+.PHONY: all clean oclean flcean re
 
-$(TARGET): $(OBJ)
-	@echo "OBJ: $(OBJ)"
-	@echo "SRC: $(SRC)"
-	$(CC) $(CFLAGS) -o $@ $^
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
-
+all: $(OBJ0) $(OBJ1)
+	$(CC) $(OBJ0) -o $(NAME0)
+	$(CC) $(OBJ1) -o $(NAME1)
 clean:
-	$(RM) $(OBJ) $(TARGET)
+	$(RM) *~ $(NAME0)
+	$(RM) *~ $(NAME1)
+
+oclean:
+	$(RM) $(OBJ0)
+	$(RM) $(OBJ1)
+
+fclean: clean oclean
+
+re: oclean all
+
+hnm: hreadelf.h $(OBJ0)
+	$(CC) $(OBJ0) -o $(NAME0)
+
+hobjdump: hreadelf.h $(OBJ1)
+	$(CC) $(OBJ1) -o $(NAME1)
