@@ -10,12 +10,12 @@ OBJ := $(SRC:.c=.o)
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-    @echo "OBJ: $(OBJ)"
-    @echo "SRC: $(SRC)"
-    $(CC) $(CFLAGS) -o $@ $^
+	@echo "OBJ: $(OBJ)"
+	@echo "SRC: $(SRC)"
+	$(CC) $(CFLAGS) -o $@ $^
 
 %.o: %.c
-    $(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-    $(RM) $(OBJ) $(TARGET)
+	$(RM) $(OBJ) $(TARGET)
