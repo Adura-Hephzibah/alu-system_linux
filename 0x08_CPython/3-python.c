@@ -70,13 +70,13 @@ void print_python_list(PyObject *p)
 	int size = (((PyVarObject *)(p))->ob_size);
 	int alloc = (((PyListObject *)(p))->allocated);
 
+	printf("[*] Python list info\n");
 	if (!PyList_Check(p))
 	{
 		printf("  [ERROR] Invalid List Object\n");
 		return;
 	}
 
-	printf("[*] Python list info\n");
 	printf("[*] Size of the Python List = %d\n", size);
 	printf("[*] Allocated = %d\n", alloc);
 	int i;
