@@ -59,7 +59,6 @@ void print_python_float(PyObject *p)
 	else
 		printf("  value: %s.0\n", str);
 
-	fflush(stdout);
 }
 
 /**
