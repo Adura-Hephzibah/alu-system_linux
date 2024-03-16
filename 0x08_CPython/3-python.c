@@ -43,13 +43,22 @@ void print_python_bytes(PyObject *p)
  */
 void print_python_float(PyObject *p)
 {
+	char *str;
+	double flt;
+
 	printf("[.] float object info\n");
 	if (!PyFloat_Check(p))
 	{
 		printf("  [ERROR] Invalid Float Object\n");
 		return;
 	}
-	printf("  value: %.1f\n", ((PyFloatObject *)p)->ob_fval);
+	flt = (((PyFloatObject *)(p))->ob_fval);
+	str = PyOS_double_to_string(flt, 'g', 16, 0, NULL);
+	if (strchr(str, '.'))
+		printf("  value: %s\n", str);
+	else
+		printf("  value: %s.0\n", str);
+
 	fflush(stdout);
 }
 
