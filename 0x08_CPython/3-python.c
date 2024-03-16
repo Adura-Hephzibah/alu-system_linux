@@ -49,7 +49,7 @@ void print_python_float(PyObject *p)
 		printf("  [ERROR] Invalid Float Object\n");
 		return;
 	}
-	printf("  value: %.16g\n", ((PyFloatObject *)p)->ob_fval);
+	printf("  value: %.1f\n", ((PyFloatObject *)p)->ob_fval);
 	fflush(stdout);
 }
 
