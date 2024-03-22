@@ -16,6 +16,10 @@
 /* Normally, MAX_PARAMS is always 6 */
 # define MAX_PARAMS	6
 
+#define NAME_PARAMS		0
+#define RET				1
+
+
 /**
  * enum type_e - Enumerates the different types present in the different
  * syscall parameters and return types
