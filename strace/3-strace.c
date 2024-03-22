@@ -1,81 +1,75 @@
 #include "syscalls.h"
 
 /**
- * print_sys - print specified system call information
- * @data: specifies what data to print
- * @regs: struct containing register values
- * @pid: id of process to trace
- */
-void print_sys(int data, struct user_regs_struct regs, pid_t pid)
+ * print_args - print system call arguments
+ * @sc: pointer to syscall struct
+ * @regs: registers (struct user_regs_struct)
+ * @pid: pid (unused)
+ **/
+void print_args(const syscall_t *sc, struct user_regs_struct *regs, pid_t pid)
 {
-	size_t i;
+	size_t i, params[MAX_PARAMS];
 
-	if (data == NAME_PARAMS)
-	{
-		printf("%s(", syscalls_64_g[regs.orig_rax].name);
-		for (i = 0; i < syscalls_64_g[regs.orig_rax].nb_params; ++i)
-		{
-			if (syscalls_64_g[regs.orig_rax].params[i] == VARARGS)
-			{
-				printf("...");
-				break;
-			}
-			printf("%s%#lx", !i ? "" : ", ", (unsigned long) (regs.rdi + i * 8));
-		}
-	}
-	else if (data == RET)
-	{
-		ptrace(PTRACE_GETREGS, pid, NULL, &regs);
-		syscalls_64_g[regs.orig_rax].ret == VOID ? puts(" = ?") :
-			printf(") = %#lx\n", (unsigned long) regs.rax);
-	}
+	(void)pid;
+
+	params[0] = regs->rdi, params[1] = regs->rsi, params[2] = regs->rdx;
+	params[3] = regs->r10, params[4] = regs->r8, params[5] = regs->r9;
+
+	putchar('(');
+	for (i = 0; sc->params[0] != VOID && i < sc->nb_params; i++)
+		if (sc->params[i] == VARARGS)
+			printf("%s...", i ? ", " : "");
+		else
+			printf("%s%#lx", i ? ", " : "", params[i]);
 }
 
 /**
- * trace_sysfull - print out system call name and return value of process
- * @pid: id of process to trace
- */
-void trace_sysfull(pid_t pid)
+ * main - traces a process and prints system call numbers as they're called
+ * @argc: argument count
+ * @argv: argument array
+ * @envp: environment parameters
+ * Return: 0 on success | 1 on failure (not enough arguments)
+ **/
+int main(int argc, char *argv[], char *envp[])
 {
-	int wstatus;
+	int skip, status;
 	struct user_regs_struct regs;
-
-	setbuf(stdout, NULL);
-	waitpid(pid, &wstatus, 0);
-	ptrace(PTRACE_SETOPTIONS, pid, NULL, PTRACE_O_TRACESYSGOOD);
-	while (1)
-	{
-		if (!step_syscall(pid))
-			break;
-		ptrace(PTRACE_GETREGS, pid, NULL, &regs);
-		print_sys(NAME_PARAMS, regs, pid);
-		if (!step_syscall(pid))
-			break;
-		print_sys(RET, regs, pid);
-	}
-	print_sys(RET, regs, pid);
-}
-
-
-/**
- * main - entry point
- * @argc: number of command-line arguments
- * @argv: pointer to an array of character strings that contain the arguments
- *
- * Return: 0 on success, 1 on failure
- */
-
-int main(int argc, char *argv[])
-{
 	pid_t pid;
 
-	if (parse_args(argc, argv))
+	if (argc < 2)
+	{
+		fprintf(stderr, "Usage: %s <full_path> [path_args]\n", argv[0]);
 		return (1);
+	}
+	setbuf(stdout, NULL);
 	pid = fork();
-	if (pid == -1)
-		return (1);
-	if (!pid)
-		return (attach(argv + 1) == -1);
-	trace_sysfull(pid);
+	if (pid == 0)
+	{
+		printf("execve(0, 0, 0");
+		ptrace(PTRACE_TRACEME, pid, NULL, NULL);
+		execve(argv[1], argv + 1, envp);
+	}
+	else
+	{
+		for (status = 1, skip = 0; !WIFEXITED(status); skip ^= 1)
+		{
+			ptrace(PT_SYSCALL, pid, NULL, NULL);
+			wait(&status);
+			ptrace(PT_GETREGS, pid, NULL, &regs);
+			if (skip)
+			{
+				printf("\n%s", syscalls_64_g[regs.orig_rax].name);
+				print_args(&syscalls_64_g[regs.orig_rax], &regs, pid);
+			}
+			else
+			{
+				if (WIFEXITED(status))
+					printf(") = ?\n");
+				else
+					printf(") = %#lx", (size_t)regs.rax);
+			}
+		}
+	}
+
 	return (0);
 }
