@@ -10,8 +10,6 @@
 #include <stdarg.h>
 #include "list.h"
 
-pthread_mutex_t tprintf_mutex;
-pthread_mutex_t tasks_mutex;
 
 /**
  * struct pixel_s - RGB pixel
@@ -109,7 +107,6 @@ typedef struct task_s
 	task_status_t   status;
 	void        *result;
 	pthread_mutex_t lock;
-    unsigned int id;
 } task_t;
 
 
@@ -122,8 +119,5 @@ list_t *prime_factors(char const *s);
 task_t *create_task(task_entry_t entry, void *param);
 void destroy_task(task_t *task);
 void *exec_tasks(list_t const *tasks);
-void *exec_task(task_t *task);
-task_status_t get_task_status(task_t *task);
-void set_task_status(task_t *task, task_status_t status);
 
 #endif
