@@ -48,7 +48,7 @@ void *exec_tasks(list_t const *tasks)
 {
 	task_t *task = NULL;
 	node_t *node = NULL;
-	int i = 0;
+	unsigned long i = 0;
 
 	node = tasks->head;
 	while (node)
