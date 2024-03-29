@@ -1,9 +1,5 @@
 #include "multithreading.h"
 
-/* prototypes */
-task_t *create_task(task_entry_t entry, void *param);
-void destroy_task(task_t *task);
-void *exec_tasks(list_t const *tasks);
 
 /**
  * create_task - creates a thread task
