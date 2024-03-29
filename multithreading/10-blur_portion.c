@@ -5,6 +5,10 @@
 #define portion_end_index(p) (((p)->y + (p)->h) * (p)->img->w)
 #define portion_start_index(p) ((p)->y * (p)->img->w + (p)->x)
 
+/* prototype */
+void blur_pixel(blur_portion_t const *portion, size_t pixel_index);
+int is_neighbor(blur_portion_t const *, int, size_t);
+
 /**
  * blur_portion - blurs a portion of an image using Gaussian Blur
  * @portion: pointer to data structure describing an image portion
