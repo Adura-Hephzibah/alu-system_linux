@@ -18,7 +18,6 @@ int main(void)
 	int sockfd, newsockfd;
 	socklen_t clilen;
 	struct sockaddr_in serv_addr, cli_addr;
-	int n;
 
 	/* Create socket */
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
