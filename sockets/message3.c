@@ -1,6 +1,6 @@
 #include "sockets.h"
 
-void request_breakdown_printout(char *message)
+void requst_breakdown_printout(char *message)
 {
 	char *request_line = NULL, *header_line = NULL, *body = NULL;
 	char *brk = "\r\n";
