@@ -2,13 +2,12 @@
 
 void request_breakdown_printout(char *message)
 {
-	char *line = NULL, *request_line = NULL, *header_line = NULL, *body = NULL;
+	char *request_line = NULL, *header_line = NULL, *body = NULL;
 	char *brk = "\r\n";
 	char *saveptr1, *saveptr2;
+	char method[8], path[32], version[16];
 
 	request_line = strtok_r(message, brk, &saveptr1);
-
-	char method[8], path[32], version[16];
 
 	sscanf(request_line, "%s %s %s", method, path, version);
 	printf("Path: %s\n", path);
