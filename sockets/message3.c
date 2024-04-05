@@ -2,7 +2,7 @@
 
 void requst_breakdown_printout(void *message)
 {
-	char *line = NULL, *request_line = NULL, *header_line = NULL, *body = NULL;
+	char *request_line = NULL, *header_line = NULL, *body = NULL;
 	char *brk = "\r\n";
 	char *saveptr1, *saveptr2;
 	char method[8], path[32], version[16];
