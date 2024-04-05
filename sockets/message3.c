@@ -6,6 +6,7 @@ void request_breakdown_printout(char *message)
 	char *brk = "\r\n";
 	char *saveptr1, *saveptr2;
 	char method[8], path[32], version[16];
+	char *param;
 
 	request_line = strtok_r(message, brk, &saveptr1);
 
@@ -23,7 +24,7 @@ void request_breakdown_printout(char *message)
 
 	body = strtok_r(NULL, "", &saveptr1);
 
-	char *param = strtok_r(body, "&", &saveptr2);
+	param = strtok_r(body, "&", &saveptr2);
 
 	while (param)
 	{
