@@ -15,12 +15,6 @@ void requst_breakdown_printout(void *message)
 	printf("Path: %s\n", path);
 
 	header_line = strtok_r(NULL, brk, &saveptr1);
-	while (header_line && header_line[0] != '\0')
-	{
-		sscanf(header_line, "%[^:]: %[^\t\n]", key, value);
-		printf("Header: \"%s\" -> \"%s\"\n", key, value);
-		header_line = strtok_r(NULL, brk, &saveptr1);
-	}
 
 	strtok_r(NULL, brk, &saveptr1);
 
