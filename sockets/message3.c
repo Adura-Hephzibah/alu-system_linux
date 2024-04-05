@@ -2,10 +2,9 @@
 
 void requst_breakdown_printout(void *message)
 {
-	char *path = NULL, *line = NULL, *all_data = NULL, *data = NULL;
-	char *brk = "\r\n", *save_ptr = NULL, *key = NULL, *value = NULL;
+	char *path = NULL, *all_data = NULL, *data = NULL;
+	char *brk = "\r\n", *key = NULL, *value = NULL;
 
-	line = strtok(message, brk);
 	path = strtok(NULL, " ");
 
 	printf("Path: %s\n", path);
@@ -32,6 +31,7 @@ int main(void)
 	struct sockaddr_in addrport;
 	char message[1024];
 	char response[] = "HTTP/1.1 200 OK\r\n\r\n";
+	size_t count = recv(sockid_c, message, sizeof(message), 0);
 
 	sockid = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 	addrport.sin_family = AF_INET;
@@ -48,7 +48,6 @@ int main(void)
 		sockid_c = accept(sockid, (struct sockaddr *) &client, (socklen_t *) &client_size);
 		printf("Client connected: %s\n", inet_ntoa(client.sin_addr));
 
-		size_t count = recv(sockid_c, message, sizeof(message), 0);
 		if (count > 0)
 		{
 			message[count] = '\0';
