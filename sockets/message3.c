@@ -7,32 +7,59 @@ void requst_breakdown_printout(void *message)
 
 	line = strtok(message, brk);
 	method = strtok(line, " ");
-	path = strtok(NULL, "?");
-	all_data = strtok(NULL, " ");
-	req_type = strtok(NULL, "\r\n");
+	path = strtok(NULL, " ");
+
 	printf("Path: %s\n", path);
-	if (strcmp(method, "POST") == 0 && strcmp(req_type, "HTTP/1.1") == 0)
+
+	all_data = strtok(NULL, "");
+	if (all_data != NULL)
 	{
-		char *body = strtok(NULL, "\r\n\r\n");
-		data = strtok_r(body, "&", &save_ptr);
+		printf("Body params:\n");
+		data = strtok(all_data, "&");
 		while (data)
 		{
 			key = strtok(data, "=");
 			value = strtok(NULL, "=");
-			printf("Body param: \"%s\" -> \"%s\"\n", key, value);
-			data = strtok_r(NULL, "&", &save_ptr);
+			printf("\"%s\" -> \"%s\"\n", key, value);
+			data = strtok(NULL, "&");
 		}
 	}
-	else
+}
+
+int main(void)
+{
+	int sockid = 0, sockid_c = 0, client_size = 0, server_size = 0;
+	struct sockaddr_in client;
+	struct sockaddr_in addrport;
+
+	sockid = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+	addrport.sin_family = AF_INET;
+	addrport.sin_addr.s_addr = INADDR_ANY;
+	addrport.sin_port = htons(8080);
+	server_size = sizeof(addrport);
+	bind(sockid, (struct sockaddr *) &addrport, server_size);
+	printf("Server listening on port 8080\n");
+
+	while (1)
 	{
-		data = strtok_r(all_data, "&", &save_ptr);
-		while (data && method && req_type)
+		listen(sockid, 8);
+		client_size = sizeof(client);
+		sockid_c = accept(sockid, (struct sockaddr *) &client, (socklen_t *) &client_size);
+		printf("Client connected: %s\n", inet_ntoa(client.sin_addr));
+
+		char message[1024];
+		size_t count = recv(sockid_c, message, sizeof(message), 0);
+		if (count > 0)
 		{
-			key = strtok(data, "=");
-			value = strtok(NULL, "=");
-			printf("Query: \"%s\" -> \"%s\"\n", key, value);
-			data = strtok_r(NULL, "&", &save_ptr);
+			message[count] = '\0';
+			printf("Raw request: \"%s\"\n", message);
+			char response[] = "HTTP/1.1 200 OK\r\n\r\n";
+			send(sockid_c, response, strlen(response), 0);
+			requst_breakdown_printout((void *)message);
 		}
+
+		close(sockid_c);
 	}
-	return;
+
+	return (0);
 }
