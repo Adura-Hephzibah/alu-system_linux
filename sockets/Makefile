@@ -19,6 +19,9 @@ todo_api_4: todo_api_4.c rest_api.h rest_api.c rest_api_2.c queue.c list.c
 todo_api_5: todo_api_5.c rest_api.h rest_api.c rest_api_2.c queue.c list.c
 	$(CC) $(CFLAGS) -o $@  $^
 
+todo_api_6: todo_api_6.c rest_api.h rest_api.c rest_api_2.c queue.c list.c
+	$(CC) $(CFLAGS) -o $@  $^
+
 sockets.o: sockets.c sockets.h
 	$(CC) $(CFLAGS) -c sockets.c
 
