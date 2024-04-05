@@ -26,7 +26,7 @@ message2.o: message2.c sockets.h
 	$(CC) $(CFLAGS) -c message2.c
 
 message3.o: message3.c sockets.h
-	$(CC) $(CFLAGS) -c message2.c
+	$(CC) $(CFLAGS) -c message3.c
 
 .PHONY: clean
 clean:
