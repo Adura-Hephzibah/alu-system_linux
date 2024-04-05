@@ -3,7 +3,7 @@
 void requst_breakdown_printout(void *message)
 {
 	char *path = NULL, *all_data = NULL, *data = NULL;
-	char *brk = "\r\n", *key = NULL, *value = NULL;
+	char *key = NULL, *value = NULL;
 
 	path = strtok(NULL, " ");
 
