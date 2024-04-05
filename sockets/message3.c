@@ -4,10 +4,9 @@
 
 void requst_breakdown_printout(void *message)
 {
-	char *path = NULL, *line = NULL, *all_data = NULL, *data = NULL;
+	char *path = NULL, *all_data = NULL, *data = NULL;
 	char *brk = "\r\n", *key = NULL, *value = NULL;
 
-	line = strtok(message, brk);
 	path = strtok(NULL, " ");
 
 	printf("Path: %s\n", path);
