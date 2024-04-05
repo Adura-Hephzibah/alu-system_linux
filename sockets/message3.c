@@ -1,6 +1,6 @@
 #include "sockets.h"
 
-void requst_breakdown_printout(void *message)
+void requst_breakdown_printout(void)
 {
 	char *path = NULL, *all_data = NULL, *data = NULL;
 	char *key = NULL, *value = NULL;
