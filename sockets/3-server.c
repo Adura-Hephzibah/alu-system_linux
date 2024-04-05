@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 
 #define PORT 12345
-#define BUFFER_SIZE 256
+#define BUFFER_SIZE 1024
 
 /**
  * main - opens an IPv4/TCP socket, and listens to traffic on port 12345
