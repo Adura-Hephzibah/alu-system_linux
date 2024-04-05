@@ -1,4 +1,6 @@
 #include "sockets.h"
+#include <stdio.h>
+#include <string.h>
 
 void requst_breakdown_printout(void *message)
 {
@@ -11,11 +13,10 @@ void requst_breakdown_printout(void *message)
 
 	printf("Path: %s\n", path);
 
-
 	all_data = strtok(NULL, "\r\n\r\n");
 	if (all_data)
 	{
-		all_data += strlen("\r\n");
+		all_data += strlen("\r\n\r\n");
 		data = strtok(all_data, "&");
 
 		while (data && method)
