@@ -2,28 +2,23 @@
 
 void requst_breakdown_printout(void *message)
 {
-	char *request_line = NULL, *body = NULL;
-	char *brk = "\r\n";
-	char *saveptr1, *saveptr2;
-	char method[8], path[32], version[16];
-	char key[32], value[64];
-	char *param;
+	char *path = NULL, *line = NULL, *method = NULL, *all_data = NULL, *data = NULL;
+	char *brk = "\r\n", *req_type = NULL, *save_ptr = NULL, *key = NULL, *value = NULL;
 
-	request_line = strtok_r(message, brk, &saveptr1);
-
-	sscanf(request_line, "%s %s %s", method, path, version);
+	line = strtok(message, brk);
+	method = strtok(line, " ");
+	path = strtok(NULL, "?");
+	all_data = strtok(NULL, " ");
+	req_type = strtok(NULL, "\r\n");
 	printf("Path: %s\n", path);
-
-	strtok_r(NULL, brk, &saveptr1);
-
-	body = strtok_r(NULL, "", &saveptr1);
-
-	param = strtok_r(body, "&", &saveptr2);
-	while (param)
+	data = strtok_r(all_data, "&", &save_ptr);
+	while (data && method && req_type)
 	{
-		sscanf(param, "%[^=]=%s", key, value);
+		key = strtok(data, "=");
+		value = strtok(NULL, "=");
 		printf("Body param: \"%s\" -> \"%s\"\n", key, value);
-		param = strtok_r(NULL, "&", &saveptr2);
+		data = strtok_r(NULL, "&", &save_ptr);
 	}
+	return;
 
 }
