@@ -2,26 +2,36 @@
 
 void requst_breakdown_printout(void *message)
 {
-	char *path = NULL, *line = NULL, *data = NULL;
-	char *brk = "\r\n", *save_ptr1 = NULL, *save_ptr2 = NULL, *key = NULL, *value = NULL;
-	char *body = NULL;
+	char *path = NULL, *line = NULL, *method = NULL, *all_data = NULL, *data = NULL;
+	char *brk = "\r\n", *req_type = NULL, *save_ptr = NULL, *key = NULL, *value = NULL;
 
-	line = strtok_r(message, brk, &save_ptr1);
-	path = strtok_r(NULL, " ", &save_ptr2);
+	line = strtok(message, brk);
+	method = strtok(line, " ");
+	path = strtok(NULL, "?");
+	all_data = strtok(NULL, " ");
+	req_type = strtok(NULL, "\r\n");
 	printf("Path: %s\n", path);
-
-	while ((line = strtok_r(NULL, brk, &save_ptr1)) && strlen(line) > 0);
-
-	body = strtok_r(NULL, "", &save_ptr1);
-	if (body)
+	if (strcmp(method, "POST") == 0 && strcmp(req_type, "HTTP/1.1") == 0)
 	{
-		data = strtok_r(body, "&", &save_ptr2);
+		char *body = strtok(NULL, "\r\n\r\n");
+		data = strtok_r(body, "&", &save_ptr);
 		while (data)
 		{
 			key = strtok(data, "=");
 			value = strtok(NULL, "=");
 			printf("Body param: \"%s\" -> \"%s\"\n", key, value);
-			data = strtok_r(NULL, "&", &save_ptr2);
+			data = strtok_r(NULL, "&", &save_ptr);
+		}
+	}
+	else
+	{
+		data = strtok_r(all_data, "&", &save_ptr);
+		while (data && method && req_type)
+		{
+			key = strtok(data, "=");
+			value = strtok(NULL, "=");
+			printf("Query: \"%s\" -> \"%s\"\n", key, value);
+			data = strtok_r(NULL, "&", &save_ptr);
 		}
 	}
 	return;
