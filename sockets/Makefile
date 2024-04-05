@@ -11,7 +11,7 @@ todo_api_2: sockets.o message2.o
 	$(CC) $(CFLAGS) -o todo_api_2 sockets.o message2.o -lm
 
 todo_api_3: sockets.o message2.o
-	$(CC) $(CFLAGS) -o todo_api_2 sockets.o message2.o -lm
+	$(CC) $(CFLAGS) -o todo_api_3 sockets.o message2.o -lm
 
 sockets.o: sockets.c sockets.h
 	$(CC) $(CFLAGS) -c sockets.c
