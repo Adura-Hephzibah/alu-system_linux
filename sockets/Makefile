@@ -10,8 +10,8 @@ todo_api_1: sockets.o message1.o
 todo_api_2: sockets.o message2.o
 	$(CC) $(CFLAGS) -o todo_api_2 sockets.o message2.o -lm
 
-todo_api_3: sockets.o message2.o
-	$(CC) $(CFLAGS) -o todo_api_3 sockets.o message2.o -lm
+todo_api_3: sockets.o message3.o
+	$(CC) $(CFLAGS) -o todo_api_3 sockets.o message3.o -lm
 
 sockets.o: sockets.c sockets.h
 	$(CC) $(CFLAGS) -c sockets.c
@@ -23,6 +23,9 @@ message1.o: message1.c sockets.h
 	$(CC) $(CFLAGS) -c message1.c
 
 message2.o: message2.c sockets.h
+	$(CC) $(CFLAGS) -c message2.c
+
+message3.o: message3.c sockets.h
 	$(CC) $(CFLAGS) -c message2.c
 
 .PHONY: clean
